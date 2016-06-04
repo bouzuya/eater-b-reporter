@@ -2,6 +2,8 @@
 
 bouzuya's simple reporter for [eater][yosuke-furukawa/eater].
 
+[yosuke-furukawa/eater]: https://github.com/yosuke-furukawa/eater
+
 ## Installation
 
 ```
