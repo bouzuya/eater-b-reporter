@@ -16,6 +16,18 @@ $ npm install eater-b-reporter
 $ eater --reporter eater-b-reporter
 ```
 
+or
+
+`package.json`
+
+```js
+{
+  "eater": {
+    "reporter": "eater-b-reporter"
+  }
+}
+```
+
 ## Badges
 
 [![Circle CI][circleci-badge-url]][circleci-url]
