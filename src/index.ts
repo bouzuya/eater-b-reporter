@@ -71,6 +71,14 @@ class BReporter implements Reporter {
     hasError: boolean,
     errors: { [fileName: string]: ErrorMessage; }
   ): void {
+    Object
+      .keys(errors)
+      .map(fileName => [fileName, errors[fileName]])
+      .forEach(([fileName, errorMessage], index) => {
+        console.log(`${red('✗ failure: ')}${fileName}`);
+        console.log(errorMessage);
+      });
+
     // assert this.totalFileNum === [totalFileNum in reportFileNumber];
     const totalFileNum = this.totalFileNum;
     // assert this.failedFileNum === Object.keys(errors).length;
@@ -80,21 +88,13 @@ class BReporter implements Reporter {
     const totalTestNum = this.totalTestNum;
     const failedTestNum = this.failedTestNum;
     // const succeedTestNum = this.succeedTestNum; // unused
-    const result = hasError
+    const summary = hasError
       ? red(
         `✗ ${failedFileNum} of ${totalFileNum} files` +
         `, ${failedTestNum} of ${totalTestNum} tests failed`
       )
       : green(`✓ ${totalFileNum} files ${totalTestNum} tests completed`);
-    console.log(result);
-
-    Object
-      .keys(errors)
-      .map(fileName => [fileName, errors[fileName]])
-      .forEach(([fileName, errorMessage], index) => {
-        console.log(`${red('✗ failure: ')}${fileName}`);
-        console.log(errorMessage);
-      });
+    console.log(summary);
   }
 }
 

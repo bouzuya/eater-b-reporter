@@ -45,13 +45,13 @@ test('1 of 2 files, 1 of 4 tests failed', resolve => {
     [fileName1]: 'test1-2 OUT!!!'
   });
   const reportFinish1 = log.getCall(2).args[0];
-  assert(reportFinish1.indexOf('1 of 2 files') >= 0);
-  assert(reportFinish1.indexOf('1 of 4 tests failed') >= 0);
+  assert(reportFinish1.indexOf('✗ failure: ') >= 0);
+  assert(reportFinish1.indexOf(fileName1) >= 0);
   const reportFinish2 = log.getCall(3).args[0];
-  assert(reportFinish2.indexOf('✗ failure: ') >= 0);
-  assert(reportFinish2.indexOf(fileName1) >= 0);
-  const reportFinish3 = log.getCall(4).args[0];
-  assert(reportFinish3.indexOf('test1-2 OUT!!!') >= 0);
+  assert(reportFinish2.indexOf('test1-2 OUT!!!') >= 0);
+  const reportFinishSummary = log.getCall(4).args[0];
+  assert(reportFinishSummary.indexOf('1 of 2 files') >= 0);
+  assert(reportFinishSummary.indexOf('1 of 4 tests failed') >= 0);
 
   resolve();
 });
@@ -95,9 +95,9 @@ test('2 files 4 tests completed', resolve => {
   assert(reportSuccess2.indexOf(fileName2) >= 0);
 
   reporter.reportFinish(false, {});
-  const reportFinish1 = log.getCall(3).args[0];
-  assert(reportFinish1.indexOf('2 files') >= 0);
-  assert(reportFinish1.indexOf('4 tests completed') >= 0);
+  const reportFinishSummary = log.getCall(3).args[0];
+  assert(reportFinishSummary.indexOf('2 files') >= 0);
+  assert(reportFinishSummary.indexOf('4 tests completed') >= 0);
 
   resolve();
 });
