@@ -5,7 +5,19 @@ import * as sinon from 'sinon';
 import ReporterType from '../src/index';
 import { console as consoleType } from '../src/console';
 
-test('1 of 2 files, 1 of 4 tests failed', () => {
+type Context = {
+  sandbox: sinon.SinonSandbox;
+  log: sinon.SinonStub;
+  reporter: ReporterType;
+  fileName1: string;
+  testName11: string;
+  testName12: string;
+  fileName2: string;
+  testName21: string;
+  testName22: string;
+};
+
+const before = (): Context => {
   const sandbox = sinon.sandbox.create();
   const log = sandbox.stub();
   const Reporter: typeof ReporterType = proxyquire('../src/index', {
@@ -20,6 +32,22 @@ test('1 of 2 files, 1 of 4 tests failed', () => {
   const testName22 = 'test2-2';
 
   const reporter = new Reporter();
+
+  return {
+    sandbox, log, reporter,
+    fileName1, testName11, testName12, fileName2, testName21, testName22
+  };
+};
+
+const after = ({ sandbox }: Context): void => {
+  sandbox.restore();
+};
+
+test('1 of 2 files, 1 of 4 tests failed', (context: Context) => {
+  const {
+    log, reporter,
+    fileName1, testName11, testName12, fileName2, testName21, testName22
+  } = context;
 
   reporter.reportFileNumber(2);
   const reportFileNumber = log.getCall(log.callCount - 1).args[0];
@@ -51,23 +79,13 @@ test('1 of 2 files, 1 of 4 tests failed', () => {
   const reportFinishSummary = log.getCall(4).args[0];
   assert(reportFinishSummary.indexOf('1 of 2 files') >= 0);
   assert(reportFinishSummary.indexOf('1 of 4 tests failed') >= 0);
-});
+}, { before, after });
 
-test('2 files 4 tests completed', () => {
-  const sandbox = sinon.sandbox.create();
-  const log = sandbox.stub();
-  const Reporter: typeof ReporterType = proxyquire('../src/index', {
-    './console': { console: { log } }
-  }).default;
-
-  const fileName1 = '.tmp/test/file1.js';
-  const testName11 = 'test1-1';
-  const testName12 = 'test1-2';
-  const fileName2 = '.tmp/test/file2.js';
-  const testName21 = 'test2-1';
-  const testName22 = 'test2-2';
-
-  const reporter = new Reporter();
+test('2 files 4 tests completed', (context: Context) => {
+  const {
+    log, reporter,
+    fileName1, testName11, testName12, fileName2, testName21, testName22
+  } = context;
 
   reporter.reportFileNumber(2);
   const reportFileNumber = log.getCall(log.callCount - 1).args[0];
@@ -95,4 +113,4 @@ test('2 files 4 tests completed', () => {
   const reportFinishSummary = log.getCall(3).args[0];
   assert(reportFinishSummary.indexOf('2 files') >= 0);
   assert(reportFinishSummary.indexOf('4 tests completed') >= 0);
-});
+}, { before, after });
