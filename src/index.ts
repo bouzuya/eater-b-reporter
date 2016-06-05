@@ -4,7 +4,7 @@ import * as setBlocking from 'set-blocking';
 import { Reporter, TestName, SubTestName, ErrorMessage } from './reporter';
 import { console } from './console';
 
-class BReporter implements Reporter {
+export default class BReporter implements Reporter {
   // file = test (test.js)
   // test = sub test (test('sub-test', done => /* ... */))
   private totalFileNum: number;
@@ -97,5 +97,3 @@ class BReporter implements Reporter {
     console.log(summary);
   }
 }
-
-export default BReporter;
