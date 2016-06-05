@@ -1,12 +1,11 @@
-import * as assert from 'power-assert';
-import { test } from 'eater/runner';
+import { assert, test } from './helper';
 import * as proxyquire from 'proxyquire';
 import * as sinon from 'sinon';
 
 import ReporterType from '../src/index';
 import { console as consoleType } from '../src/console';
 
-test('1 of 2 files, 1 of 4 tests failed', resolve => {
+test('1 of 2 files, 1 of 4 tests failed', () => {
   const sandbox = sinon.sandbox.create();
   const log = sandbox.stub();
   const Reporter: typeof ReporterType = proxyquire('../src/index', {
@@ -52,11 +51,9 @@ test('1 of 2 files, 1 of 4 tests failed', resolve => {
   const reportFinishSummary = log.getCall(4).args[0];
   assert(reportFinishSummary.indexOf('1 of 2 files') >= 0);
   assert(reportFinishSummary.indexOf('1 of 4 tests failed') >= 0);
-
-  resolve();
 });
 
-test('2 files 4 tests completed', resolve => {
+test('2 files 4 tests completed', () => {
   const sandbox = sinon.sandbox.create();
   const log = sandbox.stub();
   const Reporter: typeof ReporterType = proxyquire('../src/index', {
@@ -98,6 +95,4 @@ test('2 files 4 tests completed', resolve => {
   const reportFinishSummary = log.getCall(3).args[0];
   assert(reportFinishSummary.indexOf('2 files') >= 0);
   assert(reportFinishSummary.indexOf('4 tests completed') >= 0);
-
-  resolve();
 });
