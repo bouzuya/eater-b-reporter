@@ -11,7 +11,8 @@
     "url": "https://github.com/bouzuya/eater-b-reporter/issues"
   },
   "dependencies": {
-    "colo": "0.3.2"
+    "colo": "0.3.2",
+    "set-blocking": "2.0.0"
   },
   "devDependencies": {
     "eater": "1.5.5",

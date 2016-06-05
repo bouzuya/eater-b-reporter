@@ -1,5 +1,6 @@
 import { ChildProcess } from 'child_process';
 import { red, green } from 'colo';
+import * as setBlocking from 'set-blocking';
 import { Reporter, TestName, SubTestName, ErrorMessage } from './reporter';
 import { console } from './console';
 
@@ -14,6 +15,9 @@ class BReporter implements Reporter {
   private succeedTestNum: number;
 
   constructor() {
+    // FIXME: workaround for https://github.com/nodejs/node/pull/6773
+    setBlocking(true);
+
     this.totalFileNum = 0;
     this.failedFileNum = 0;
     this.succeedFileNum = 0;
